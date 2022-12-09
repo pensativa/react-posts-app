@@ -4,7 +4,7 @@ It is a simple project created with React, TypeScript and Redux. For styles was 
 
 [Link to project](https://pensativa.github.io/react-posts-app/)
 
-##Project data
+## Project data
 
 For project was used next resurses:
 
