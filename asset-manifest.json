@@ -1,15 +1,15 @@
 {
-  "main.css": "/react-posts-app/static/css/main.9978c5e5.chunk.css",
-  "main.js": "/react-posts-app/static/js/main.961d3802.chunk.js",
-  "main.js.map": "/react-posts-app/static/js/main.961d3802.chunk.js.map",
-  "static/js/1.790a55fe.chunk.js": "/react-posts-app/static/js/1.790a55fe.chunk.js",
-  "static/js/1.790a55fe.chunk.js.map": "/react-posts-app/static/js/1.790a55fe.chunk.js.map",
-  "static/js/2.c523152f.chunk.js": "/react-posts-app/static/js/2.c523152f.chunk.js",
-  "static/js/2.c523152f.chunk.js.map": "/react-posts-app/static/js/2.c523152f.chunk.js.map",
-  "runtime~main.js": "/react-posts-app/static/js/runtime~main.cc588da2.js",
-  "runtime~main.js.map": "/react-posts-app/static/js/runtime~main.cc588da2.js.map",
-  "static/css/main.9978c5e5.chunk.css.map": "/react-posts-app/static/css/main.9978c5e5.chunk.css.map",
-  "index.html": "/react-posts-app/index.html",
-  "precache-manifest.bdeaae6dc6fb622b61fa5e76a310e9ea.js": "/react-posts-app/precache-manifest.bdeaae6dc6fb622b61fa5e76a310e9ea.js",
-  "service-worker.js": "/react-posts-app/service-worker.js"
+  "files": {
+    "main.css": "/react-posts-app/static/css/main.6f4ed475.css",
+    "main.js": "/react-posts-app/static/js/main.f41e17be.js",
+    "static/js/787.e0860f2c.chunk.js": "/react-posts-app/static/js/787.e0860f2c.chunk.js",
+    "index.html": "/react-posts-app/index.html",
+    "main.6f4ed475.css.map": "/react-posts-app/static/css/main.6f4ed475.css.map",
+    "main.f41e17be.js.map": "/react-posts-app/static/js/main.f41e17be.js.map",
+    "787.e0860f2c.chunk.js.map": "/react-posts-app/static/js/787.e0860f2c.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6f4ed475.css",
+    "static/js/main.f41e17be.js"
+  ]
 }
