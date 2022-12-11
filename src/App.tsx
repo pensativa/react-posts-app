@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "./App.css";
 import { useAppDispatch } from "./app/hooks";
 import { fetchComments } from "./app/reducers/comments";
@@ -13,7 +14,6 @@ import Post from "./Pages/Post";
 import Posts from "./Pages/Posts";
 import Profile from "./Pages/Profile";
 import Users from "./Pages/Users";
-import { useLocation } from "react-router-dom";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();

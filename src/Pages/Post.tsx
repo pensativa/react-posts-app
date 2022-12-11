@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useAppSelector } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { addNew } from "../app/reducers/comments";
 import Preloader from "../components/Preloader";
 import Title from "../components/Title";
+import { Comments } from "../types/Comments";
 import { Posts } from "../types/Posts";
 
 const Post = () => {
@@ -11,20 +13,29 @@ const Post = () => {
   const comments = useAppSelector((state) => state.commentsReducer);
   const users = useAppSelector((state) => state.userReducer);
   const currentPost = posts.filter((post) => post.id === Number(name))[0];
-  const currentComments = comments.filter(
+  let currentComments = comments.filter(
     (comment) => comment.postId === currentPost.id
   );
+
   const currentUser = users.filter((user) => user.id === currentPost.userId)[0];
   let currentUserPosts: Posts[] = [];
   if (currentUser) {
     currentUserPosts = posts.filter((post) => post.userId === currentUser.id);
   }
 
+  console.log(currentComments);
+
   const [postsPerPage, setPostPerPage] = useState(3);
   const [commentsPerPage, setCommentsPerPage] = useState(3);
 
+  useEffect(() => {
+    currentComments = comments.filter(
+      (comment) => comment.postId === currentPost.id
+    );
+    commentsSliced = currentComments.slice(0, commentsPerPage);
+  });
   const otherPosts = currentUserPosts.slice(0, postsPerPage);
-  const commentsSliced = currentComments.slice(0, commentsPerPage);
+  let commentsSliced = currentComments.slice(0, commentsPerPage);
 
   const showMore = () => {
     if (currentUserPosts.length < postsPerPage + 3) {
@@ -45,6 +56,36 @@ const Post = () => {
     }
   };
   const hideComments = () => setCommentsPerPage(3);
+
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [body, setBody] = useState("");
+  let [coundId, setCountId] = useState(comments.length + 1);
+
+  const newComment: Comments = {
+    postId: Number(name),
+    id: coundId,
+    name: username,
+    email: email,
+    body: body,
+  };
+
+  const dispatch = useAppDispatch();
+
+  const pushComment = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (username === "" || email === "" || body === "") {
+      alert("Please, complate all feilds");
+    } else {
+      dispatch(addNew(newComment));
+      setUsername("");
+      setEmail("");
+      setBody("");
+      setCountId((coundId += 1));
+    }
+    console.log(newComment);
+    console.log(coundId);
+  };
 
   return (
     <main className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 w-full">
@@ -103,26 +144,65 @@ const Post = () => {
                       </li>
                     ))}
                   </ul>
-
-                  <p className="text-center">
-                    {commentsPerPage === currentComments.length ? (
-                      <button
-                        className="inline-block md:px-6 px-4 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-                        type="button"
-                        onClick={hideComments}
-                      >
-                        Hide Comments
-                      </button>
-                    ) : (
-                      <button
-                        className="inline-block md:px-6 px-4 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-                        type="button"
-                        onClick={showMoreComments}
-                      >
-                        Show more ({currentComments.length - commentsPerPage})
-                      </button>
-                    )}
-                  </p>
+                  {currentComments.length !== 0 ? (
+                    <p className="text-center">
+                      {commentsPerPage === currentComments.length ? (
+                        <button
+                          className="inline-block md:px-6 px-4 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+                          type="button"
+                          onClick={hideComments}
+                        >
+                          Hide Comments
+                        </button>
+                      ) : (
+                        <button
+                          className="inline-block md:px-6 px-4 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+                          type="button"
+                          onClick={showMoreComments}
+                        >
+                          Show more ({currentComments.length - commentsPerPage})
+                        </button>
+                      )}
+                    </p>
+                  ) : null}
+                  <form className="mt-6" onSubmit={(e) => pushComment(e)}>
+                    <div className="form-group mb-6">
+                      <input
+                        type="text"
+                        className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                        id="exampleInput7"
+                        value={username}
+                        placeholder="Name"
+                        onChange={(e) => setUsername(e.target.value)}
+                      />
+                    </div>
+                    <div className="form-group mb-6">
+                      <input
+                        type="email"
+                        className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                        id="exampleInput8"
+                        value={email}
+                        placeholder="Email address"
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                    </div>
+                    <div className="form-group mb-6">
+                      <textarea
+                        className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                        id="exampleFormControlTextarea13"
+                        rows={3}
+                        value={body}
+                        placeholder="Message"
+                        onChange={(e) => setBody(e.target.value)}
+                      ></textarea>
+                    </div>
+                    <button
+                      type="submit"
+                      className="w-full px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg  focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+                    >
+                      Send
+                    </button>
+                  </form>
                 </>
               ) : null}
             </div>
